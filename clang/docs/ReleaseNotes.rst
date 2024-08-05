@@ -147,7 +147,7 @@ Clang Frontend Potentially Breaking Changes
   that ``none`` means that there is no operating system. As opposed to an unknown
   type of operating system.
 
-  This change my cause clang to not find libraries, or libraries to be built at
+  This change can cause clang to not find libraries, or libraries to be built at
   different file system locations. This can be fixed by changing your builds to
   use the new normalized triple. However, we recommend instead getting the
   normalized triple from clang itself, as this will make your builds more
@@ -447,6 +447,10 @@ Non-comprehensive list of changes in this release
   type of the pointer was taken into account. This improves
   compatibility with GCC's libstdc++.
 
+- The type traits builtin ``__is_nullptr`` is deprecated in CLang 19 and will be
+  removed in Clang 20. ``__is_same(__remove_cv(T), decltype(nullptr))`` can be
+  used instead to check whether a type ``T`` is a ``nullptr``.
+
 New Compiler Flags
 ------------------
 - ``-fsanitize=implicit-bitfield-conversion`` checks implicit truncation and
@@ -629,6 +633,9 @@ Attribute Changes in Clang
   The attributes declare constraints about a function's behavior pertaining to blocking and
   heap memory allocation.
 
+- The ``hybrid_patchable`` attribute is now supported on ARM64EC targets. It can be used to specify
+  that a function requires an additional x86-64 thunk, which may be patched at runtime.
+
 Improvements to Clang's diagnostics
 -----------------------------------
 - Clang now emits an error instead of a warning for ``-Wundefined-internal``
@@ -751,7 +758,7 @@ Improvements to Clang's diagnostics
 
 - Clang now diagnoses dangling assignments for pointer-like objects (annotated with `[[gsl::Pointer]]`) under `-Wdangling-assignment-gsl` (off by default)
   Fixes #GH63310.
-  
+
 - Clang now diagnoses uses of alias templates with a deprecated attribute. (Fixes #GH18236).
 
   .. code-block:: c++
@@ -766,6 +773,9 @@ Improvements to Clang's diagnostics
      UsingWithAttr<int> objUsingWA; // warning: 'UsingWithAttr' is deprecated
 
 - Clang now diagnoses undefined behavior in constant expressions more consistently. This includes invalid shifts, and signed overflow in arithmetic.
+
+- Clang now diagnoses dangling references to fields of temporary objects. Fixes #GH81589.
+
 
 Improvements to Clang's time-trace
 ----------------------------------
@@ -1361,6 +1371,9 @@ Crash and bug fixes
 
 - Fixed a crash when storing through an address that refers to the address of
   a label. (#GH89185)
+
+- Fixed a crash when using ``__builtin_bitcast(type, array)`` as an array
+  subscript. (#GH94496)
 
 - Z3 crosschecking (aka. Z3 refutation) is now bounded, and can't consume
   more total time than the eymbolic execution itself. (#GH97298)
