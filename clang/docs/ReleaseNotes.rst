@@ -1058,6 +1058,8 @@ Bug Fixes to C++ Support
 - Fixed a substitution bug in transforming CTAD aliases when the type alias contains a non-pack template argument
   corresponding to a pack parameter (#GH124715)
 - Clang is now better at keeping track of friend function template instance contexts. (#GH55509)
+- Fixed an integer overflow bug in computing template parameter depths when synthesizing CTAD guides. (#GH128691)
+- Fixed an incorrect pointer access when checking access-control on concepts. (#GH131530)
 
 Bug Fixes to AST Handling
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1297,6 +1299,11 @@ AVR Support
 ^^^^^^^^^^^
 
 - Reject C/C++ compilation for avr1 devices which have no SRAM.
+
+BPF Support
+^^^^^^^^^^^
+
+- Make ``-mcpu=v3`` as the default.
 
 DWARF Support in Clang
 ----------------------
