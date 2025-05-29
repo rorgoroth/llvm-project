@@ -75,7 +75,21 @@ unsigned llvm::ThreadPoolStrategy::compute_thread_count() const {
 // keyword.
 #include "llvm/Support/thread.h"
 
+#if defined(__APPLE__)
+  // Darwin's default stack size for threads except the main one is only 512KB,
+  // which is not enough for some/many normal LLVM compilations. This implements
+  // the same interface as std::thread but requests the same stack size as the
+  // main thread (8MB) before creation.
 const std::optional<unsigned> llvm::thread::DefaultStackSize = 8 * 1024 * 1024;
+#elif defined(_AIX)
+  // On AIX, the default pthread stack size limit is ~192k for 64-bit programs.
+  // This limit is easily reached when doing link-time thinLTO. AIX library
+  // developers have used 4MB, so we'll do the same.
+const std::optional<unsigned> llvm::thread::DefaultStackSize = 4 * 1024 * 1024;
+#else
+const std::optional<unsigned> llvm::thread::DefaultStackSize;
+#endif
+
 
 #endif
 
