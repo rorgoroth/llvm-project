@@ -31,6 +31,7 @@ add_mlir_library(MLIRTestIR
   LINK_LIBS PUBLIC
   MLIRTestDialect
   )
+
 mlir_target_link_libraries(MLIRTestIR PUBLIC
   MLIRPass
   MLIRBytecodeReader

@@ -62,7 +62,7 @@ module m
     real, pointer :: a ! ok
   end function
   pure real function f04(a) ! C1583
-    !WARNING: non-POINTER dummy argument of pure function should be INTENT(IN) or VALUE
+    !WARNING: non-POINTER dummy argument of pure function should be INTENT(IN) or VALUE [-Wrelaxed-pure-dummy]
     real, intent(out) :: a
   end function
   pure real function f04a(a)
@@ -204,8 +204,9 @@ module m
     !ERROR: An image control statement may not appear in a pure subprogram
     sync all ! C1599
   end subroutine
-  pure subroutine s14
-    integer :: img, nimgs, i[*], tmp
+  pure subroutine s14(i)
+    integer :: img, nimgs, tmp
+    integer, intent(in out) :: i[*]
                                    ! implicit sync all
     img = this_image()
     nimgs = num_images()
