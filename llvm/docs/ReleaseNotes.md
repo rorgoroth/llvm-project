@@ -154,6 +154,7 @@ Changes to the MIPS Backend
 ---------------------------
 
 * `-mcpu=i6400` and `-mcpu=i6500` were added.
+* Added support for `mipsel-windows-gnu` and `mipsel-windows-msvc` targets.
 
 Changes to the PowerPC Backend
 ------------------------------
@@ -228,11 +229,14 @@ Changes to the Windows Target
 
 * `fp128` is now passed indirectly, meaning it uses the same calling convention
   as `i128`.
+* Added support for `mipsel-windows-gnu` and `mipsel-windows-msvc` targets.
 
 Changes to the X86 Backend
 --------------------------
 
 * `fp128` will now use `*f128` libcalls on 32-bit GNU targets as well.
+* On x86-32, `fp128` and `i128` are now passed with the expected 16-byte stack
+  alignment.
 
 Changes to the OCaml bindings
 -----------------------------
@@ -311,12 +315,18 @@ Changes to LLDB
     stop reason = SIGSEGV: sent by tkill system call (sender pid=649752, uid=2667987)
   ```
 * ELF Cores can now have their siginfo structures inspected using `thread siginfo`.
+* LLDB now uses
+  [DIL](https://discourse.llvm.org/t/rfc-data-inspection-language/69893) as the
+  default implementation for 'frame variable'. This should not change the
+  behavior of 'frame variable' at all, at this time. To revert to using the
+  old implementation use: `settings set target.experimental.use-DIL false`.
 * Disassembly of unknown instructions now produces `<unknown>` instead of
   nothing at all
 * Changed the format of opcode bytes to match llvm-objdump when disassembling
   RISC-V code with `disassemble`'s `--byte` option.
 * LLDB added native support for the Model Context Protocol  (MCP). An MCP
   server can be started with the `protocol-server start MCP` command.
+
 
 ### Changes to lldb-dap
 
@@ -331,6 +341,13 @@ Changes to Sanitizers
 
 Other Changes
 -------------
+* A new ThinLTO backend has been added to implement the
+  [Integrated Distributed ThinLTO](https://llvm.org/docs/DTLTO.html) (DTLTO)
+  feature. This new backend delegates the ThinLTO backend compilation jobs to an
+  external process (the distributor), which in turn coordinates distribution
+  through a system such as Incredibuild. A JSON interface is used for
+  communication with the distributor.
+  ([#47468](https://github.com/llvm/llvm-project/issues/47468)).
 
 External Open Source Projects Using LLVM {{env.config.release}}
 ===============================================================
