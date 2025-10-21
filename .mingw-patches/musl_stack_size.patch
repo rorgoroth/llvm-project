@@ -1,6 +1,6 @@
 diff -ruN a/llvm/lib/Support/Threading.cpp b/llvm/lib/Support/Threading.cpp
---- a/llvm/lib/Support/Threading.cpp	2025-04-16 01:23:49.000000000 +0100
-+++ b/llvm/lib/Support/Threading.cpp	2025-04-16 15:25:47.041559508 +0100
+--- a/llvm/lib/Support/Threading.cpp	2025-10-21 09:14:55.000000000 +0100
++++ b/llvm/lib/Support/Threading.cpp	2025-10-21 14:38:05.300890362 +0100
 @@ -75,21 +75,7 @@
  // keyword.
  #include "llvm/Support/thread.h"
