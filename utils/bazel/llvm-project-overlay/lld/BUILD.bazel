@@ -2,6 +2,7 @@
 # See https://llvm.org/LICENSE.txt for license information.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
+load("@rules_cc//cc:defs.bzl", "cc_library")
 load(
     "//:vars.bzl",
     "LLVM_VERSION",
@@ -90,6 +91,7 @@ cc_library(
         "//llvm:BitWriter",
         "//llvm:CodeGen",
         "//llvm:Core",
+        "//llvm:DTLTO",
         "//llvm:DebugInfoDWARF",
         "//llvm:Demangle",
         "//llvm:IPO",
@@ -104,8 +106,8 @@ cc_library(
         "//llvm:TargetParser",
         "//llvm:TransformUtils",
         "//llvm:config",
-        "@llvm_zlib//:zlib",
-        "@llvm_zstd//:zstd",
+        "//third-party:zlib",
+        "//third-party:zstd",
     ],
 )
 
@@ -137,6 +139,7 @@ cc_library(
         "//llvm:BitReader",
         "//llvm:BitWriter",
         "//llvm:Core",
+        "//llvm:DTLTO",
         "//llvm:DebugInfo",
         "//llvm:DebugInfoCodeView",
         "//llvm:DebugInfoMSF",
